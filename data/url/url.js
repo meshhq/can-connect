@@ -367,10 +367,16 @@ var makeAjax = function ( ajaxOb, data, type, ajax, contentType, reqOptions ) {
 		delete params.data;
 	}
 
-	return ajax(assign({
+	var assigned = assign({
 		type: type || 'post',
 		dataType: 'json'
-	}, params));
+	}, params)
+
+	if (assigned.type === 'POST' || assigned.type === 'PUT') {
+		assigned.data = JSON.stringify(assigned.data)
+	}
+	assigned.contentType = 'application/json'
+	return ajax(assigned);
 };
 
 module.exports = urlBehavior;
